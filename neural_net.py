@@ -4,15 +4,21 @@ Neural network
 
 import tensorflow as tf
 from tensorflow import keras
-import tensorflow_datasets as tfds
 
-# TODO: get dataset
+# get data from preprocess_data.py
 
-data = tfds.load("nsynth")
 
-# TODO:
 # build model
+model = keras.models.Sequential()
+
 # set up layers
+# TODO: needs input shape
+model.add(keras.layers.Dense(10, input_shape=()))
+model.add(keras.layers.Activation('relu'))  # can experiment with different activation fucntions
+
+model.compile(optimizer='rmsprop',
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
 
 # TODO: train model
 
