@@ -1,7 +1,12 @@
 # Import data and prepare to feed into Keras model
+# extract features from wav files
 
-import tensorflow_datasets as tfds
+import librosa
 
-# get dataset
+data = []   # list of .wav file path names
 
-data = tfds.load("nsynth")
+for wavfile in data:
+
+    y, sample_rate = librosa.load(wavfile)
+
+    mfccs = librosa.feature.mfcc(y=y, sr=sample_rate)

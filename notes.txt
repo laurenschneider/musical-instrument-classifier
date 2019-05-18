@@ -1,0 +1,8 @@
+Things we've done to get this running on Windows10:
+
+- Use anaconda prompt to conda install tensorflow. No other command prompt could
+find the library.
+
+- Install librosa on your conda environment using the conda command given
+in the librosa readme:  https://github.com/librosa/librosa
+This prevents a weird audioread error.
