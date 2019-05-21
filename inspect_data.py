@@ -37,7 +37,7 @@ plt.show()
 Fast Fourier Transform to convert to the frequency domain
 """
 
-yf = np.fft.fft(y)  
+yf = np.fft.fft(y)
 N = len(y)  # number of samples
 reals = int(N/2)    # only need real valued data, so take first half
 yf =  yf[0:reals]
@@ -61,3 +61,12 @@ librosa.display.specshow(mfccs, x_axis='time')
 plt.colorbar()
 plt.title('instrument[0]')
 plt.show()  # TODO: save plots in separate dir
+
+"""
+Decomposition
+"""
+# TODO: quick experiment to compare spectogram, harmonic, and percussive of a few
+#       different instrument examples 
+
+stft = librosa.stft(y)    # apply short time fourier transform
+harmonic, percuss = librosa.decompose.hpss(stft)  # get harmonic and percussive components
