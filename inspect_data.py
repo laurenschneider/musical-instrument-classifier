@@ -54,6 +54,8 @@ MFCCs
 """
 
 mfccs = librosa.feature.mfcc(y=y, sr=sample_rate)
+print("mfcc type")
+print(type(mfccs[0][0]))
 """
 # visualize mfcc
 plt.figure(figsize=(10,4))
@@ -67,11 +69,11 @@ plt.show()  # TODO: save plots in separate dir
 """
 Decomposition
 """
-# TODO: quick experiment to compare spectogram, harmonic, and percussive of a few
-#       different instrument examples
 
 stft = librosa.stft(y)    # apply short time fourier transform
 harmonic, percuss = librosa.decompose.hpss(stft)  # get harmonic and percussive components
+print("harmonic type")
+print(type(harmonic[0][0]))
 plt.figure()
 
 plt.subplot(3,1,1)
