@@ -12,17 +12,22 @@ TEST_AUDIO_PATH = DATA_PATH/'nsynth-test/audio'
 test_acoustic = [file.name for file in TEST_AUDIO_PATH.iterdir()
                     if 'acoustic' in file.name]
 
+features = np.array([])
+labels = np.array([])
+
 for wavfile in test_acoustic:
     y, sample_rate = librosa.load(wavfile)
 
     # decompose to get harmonic and percussive features
     # returns numpy 2-d complex array
-    stft = librosa.stft(y)
-    harmonic, percuss = librosa.decompose.hpss(stft)
+#    stft = librosa.stft(y)
+#    harmonic, percuss = librosa.decompose.hpss(stft)
 
     # get mfccs as another feature
     # numpy 2-d float array
-    mfccs = librosa.feature.mfcc(y=y, sr=sample_rate)
+    mfccs = librosa.feature.mfcc(y=y, sr=sample_rate, n_mfcc=30)
+    features = np.append(mfccs)
 
     instrument = wavfile.split('_')     # returns a list
     instr_name = instrument[0]          # first index is the name string
+    labels = np.append(instr_name)

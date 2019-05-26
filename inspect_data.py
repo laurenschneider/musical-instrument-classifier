@@ -50,12 +50,18 @@ plt.ylabel('Amplitude')
 plt.show()
 """
 """
-MFCCs
+MFCCs - Mel-frequency cepstral coefficient, like timbre
 """
 
-mfccs = librosa.feature.mfcc(y=y, sr=sample_rate)
+mfccs = librosa.feature.mfcc(y=y, sr=sample_rate, n_mfcc=30)
 print("mfcc type")
 print(type(mfccs[0][0]))
+
+# get mean
+#avg = np.mean(mfccs.T, axis=0)
+#print("average")
+#print(avg)
+
 """
 # visualize mfcc
 plt.figure(figsize=(10,4))
