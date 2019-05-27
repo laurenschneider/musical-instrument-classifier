@@ -22,25 +22,30 @@ for wavfile in test_acoustic:
 
     # decompose to get harmonic and percussive features
     # returns numpy 2-d complex array
-    #print(wavfile)
+    """
     stft = librosa.stft(y)
-    #print('stft:  ', stft)
     harmonic, percuss = librosa.decompose.hpss(stft)
-    #print('harmonic: ', harmonic)
-    #print('percuss: ', percuss)
+    """
 
     # get mfccs as another feature
     # numpy 2-d float array
     mfccs = librosa.feature.mfcc(y=y, sr=sample_rate, n_mfcc=30)
-    #print('mfccs: ', mfccs.shape)
-    #print('mfccs: ', mfccs)
-    #TODO Each file's info should be compressed to one line
-    #(current is 30x173)
+
+    """
+    #create single array with all values for file
+    file_features = stft.flatten()
+    file_features = np.append(file_features, harmonic)
+    file_features = np.append(file_features, percuss)
+    file_features = np.append(file_features, mfccs)
+    """
+    file_features = mfccs.flatten()
+
+    #if first file, set array to this
     if not features.any():
-        features = mfccs
+        features = file_features
+    #otherwise add this file's info as new element in the features array
     else:
-        features = np.vstack((features, mfccs))
-    print('features: ', features.shape)
+        features = np.vstack((features, file_features))
 
     instrument = wavfile.split('_')     # returns a list
     instr_name = instrument[0]          # first index is the name string
