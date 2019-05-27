@@ -1,7 +1,49 @@
 # Import data and prepare to feed into Keras model
+# extract features from wav files
 
-import tensorflow_datasets as tfds
+import librosa
+import pathlib
+import numpy as np
 
-# get dataset
+DATA_PATH = pathlib.Path('data')
+TEST_AUDIO_PATH = DATA_PATH/'nsynth-test/audio'
 
-data = tfds.load("nsynth")
+# trim dataset to only one type. returns list of strings
+test_acoustic = [file.name for file in TEST_AUDIO_PATH.iterdir()
+                    if 'acoustic' in file.name]
+
+features = np.array([])
+labels = np.array([])
+
+counter = 0
+
+for wavfile in test_acoustic:
+    y, sample_rate = librosa.load(TEST_AUDIO_PATH/wavfile)
+
+    # decompose to get harmonic and percussive features
+    # returns numpy 2-d complex array
+#    stft = librosa.stft(y)
+#    harmonic, percuss = librosa.decompose.hpss(stft)
+
+    # get mfccs as another feature
+    # numpy 2-d float array
+    mfccs = librosa.feature.mfcc(y=y, sr=sample_rate, n_mfcc=30)
+    features = np.append(features, [mfccs])     # TODO: append is wrong
+
+    instrument = wavfile.split('_')     # returns a list
+    instr_name = instrument[0]          # first index is the name string
+    labels = np.append(labels, [instr_name])
+
+    if counter%100 == 0:
+        print(counter, "files written")
+    counter = counter + 1
+
+
+# for testing
+# write arrays to files to inspect
+TEST_PATH = pathlib.Path('tests')
+feature_file = TEST_PATH/'features.txt'
+label_file = TEST_PATH/'labels.txt'
+
+np.savetxt(feature_file, features, fmt="%s")
+np.savetxt(label_file, labels, fmt="%s")
