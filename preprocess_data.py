@@ -14,6 +14,8 @@ test_acoustic = [file.name for file in TEST_AUDIO_PATH.iterdir()
 
 features = np.array([[]])
 labels = np.array([])
+#dictionary to hold instrument names and corresponding numerical values
+instrument_values = {}
 
 counter = 0
 
@@ -49,11 +51,18 @@ for wavfile in test_acoustic:
 
     instrument = wavfile.split('_')     # returns a list
     instr_name = instrument[0]          # first index is the name string
-    labels = np.append(labels, [instr_name])
+
+    #add to dictionary if missing
+    if instr_name not in instrument_values:
+        instrument_values[instr_name] = len(instrument_values)
+    #add correct value to labels that corresponds to dict entry for instrument key
+    labels = np.append(labels, instrument_values[instr_name])
 
     if counter%100 == 0:
         print(counter, "files written")
     counter = counter + 1
+
+print(instrument_values)
 
 
 # for testing
@@ -61,6 +70,11 @@ for wavfile in test_acoustic:
 TEST_PATH = pathlib.Path('tests')
 feature_file = TEST_PATH/'features.txt'
 label_file = TEST_PATH/'labels.txt'
+dictionary = TEST_PATH/'dictionary.txt'
+
 
 np.savetxt(feature_file, features, fmt="%s")
 np.savetxt(label_file, labels, fmt="%s")
+dictfile = open(dictionary,"w")
+dictfile.write( str(instrument_values))
+dictfile.close()
