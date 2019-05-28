@@ -25,7 +25,7 @@ model.compile(optimizer='rmsprop',
               metrics=['accuracy'])
 
 # TODO: train model
-model.fit(x=features, y=labels, epochs=20)
+model.fit(x=features, y=labels, epochs=1)
 
 # TODO: create testing dataset
 # TODO: evaluate accuracy
