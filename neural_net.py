@@ -1,5 +1,8 @@
 """
-Neural network
+Neural network to classify acoustic instrument sounds.
+
+Must have run preprocess_data.py to generate keras friendly data files
+before running this neural net.
 """
 
 
@@ -17,21 +20,25 @@ train_features = np.loadtxt('train/features.txt')
 endtime = time.time() - starttime
 print('loaded training data in ', endtime, 's.')
 #features = np.loadtxt('tests/features.txt')
+
 starttime = time.time()
 test_features = np.loadtxt('test/features.txt')
 endtime = time.time() - starttime
 print('loaded test data in ', endtime, 's.')
 # print(features.shape)
+
 starttime = time.time()
 train_labels = np.loadtxt('train/labels.txt')
 endtime = time.time() - starttime
 print('loaded training labels in ', endtime, 's.')
+
 #labels = np.loadtxt('tests/labels.txt')
 starttime = time.time()
 test_labels = np.loadtxt('test/labels.txt')
 endtime = time.time() - starttime
 print('loaded test labels in ', endtime, 's.')
 starttime = time.time()
+
 # print(labels.shape)
 train_dictfile = open('train/dictionary.txt', 'r')
 test_dictfile = open('test/dictionary.txt', 'r')
@@ -66,7 +73,7 @@ model.compile(optimizer='rmsprop',
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 
-# TODO: train model
+# train model
 starttime = time.time()
 model.fit(x=train_features, y=train_label_cats, epochs=1)
 endtime = time.time() - starttime

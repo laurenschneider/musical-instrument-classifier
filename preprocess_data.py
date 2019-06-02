@@ -7,53 +7,6 @@ import pathlib
 import numpy as np
 
 
-# start_time = time.time()
-#instrument_values = {}
-"""
-
-def get_train():
-    all_data = tfds.load('nsynth', with_info=False)
-    train_data = all_data['train']
-    print(train_data.shape)
-    train_acoustic = [file.name for file in train_data.iterdir()
-                      if 'acoustic' in file.name]
-    train_files(train_acoustic)
-
-
-def train_files(file_names):
-    features = []
-    labels = np.array([])
-
-    counter = 0
-    # TODO Modify for training files
-    for wavfile in file_names:
-
-        y, sample_rate = librosa.load(wavfile)
-
-        # get mfccs as another feature
-        # numpy 2-d float array
-        mfccs = librosa.feature.mfcc(y=y, sr=sample_rate, n_mfcc=30)
-
-        features.append(mfccs.flatten())
-
-        instrument = wavfile.split('_')     # returns a list
-        instr_name = instrument[0]          # first index is the name string
-
-        # add to dictionary if missing
-        if instr_name not in instrument_values:
-            instrument_values[instr_name] = len(instrument_values)
-
-        # add correct value to labels that corresponds to dict entry for instrument key
-        labels = np.append(labels, instrument_values[instr_name])
-
-        if counter%100 == 0:
-            print(counter, "files written")
-        counter += 1
-
-    write_files(features, labels, instrument_values, 'train')
-"""
-
-
 def get_files(test_or_train):
     data_path = pathlib.Path('data')
     folder = 'nsynth-' + test_or_train + '/audio'
@@ -78,10 +31,10 @@ def test_files(file_names, audio_path, test_or_train):
 
         y, sample_rate = librosa.load(audio_path/wavfile)
 
-        # get mfccs as another feature
+        # get mfccs
         # numpy 2-d float array
         mfccs = librosa.feature.mfcc(y=y, sr=sample_rate, n_mfcc=30)
-
+        mfccs = np.mean(mfccs.T, axis=0)
         features.append(mfccs.flatten())
 
         instrument = wavfile.split('_')     # returns a list
@@ -97,7 +50,7 @@ def test_files(file_names, audio_path, test_or_train):
         labels = np.append(labels, dictionary[instr_name])
 
         if counter%100 == 0:
-            print(counter, "files written")
+            print(counter, "files processed")
         counter += 1
 
     write_files(features, labels, test_or_train)
@@ -110,6 +63,7 @@ def write_files(features, labels, test_or_train):
         file_path = pathlib.Path('test')
     elif test_or_train == 'train':
         file_path = pathlib.Path('train')
+
     feature_file = file_path/'features.txt'
     label_file = file_path/'labels.txt'
     dictionary = file_path/'dictionary.txt'
@@ -121,10 +75,7 @@ def write_files(features, labels, test_or_train):
     dictfile.write(str(instrument_values))
     dictfile.close()
     """
-    # print("time elapsed: {:.2f}s".format(time.time() - start_time))
 
 
 #get_files('train')
 get_files('test')
-
-
