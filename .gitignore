@@ -1,4 +1,5 @@
 env/
 tests/
 test/
-train
+train/
+data/

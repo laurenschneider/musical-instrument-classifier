@@ -1,1 +1,1 @@
-{'bass': 0, 'brass': 1, 'flute': 2, 'guitar': 3, 'keyboard': 4, 'mallet': 5, 'organ': 6, 'reed': 7, 'string': 8, 'vocal': 9}
+{'brass': 1, 'flute': 2, 'guitar': 3, 'keyboard': 4, 'mallet': 5, 'reed': 7, 'string': 8, 'vocal': 9}
