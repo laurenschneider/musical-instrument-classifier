@@ -17,10 +17,11 @@ def get_files(test_or_train):
     audio_path = data_path/folder
 
     # trim dataset to only one type. returns list of strings
-    acoustic = [file.name for file in audio_path.iterdir()
+    if test_or_train == 'test':
+        acoustic = [file.name for file in audio_path.iterdir()
                     if 'acoustic' in file.name]
 
-    if test_or_train == "train":
+    elif test_or_train == "train":
         # remove bass and organ from train set
         acoustic = [file.name for file in audio_path.iterdir()
                         if 'acoustic' in file.name and 'bass' not in file.name
