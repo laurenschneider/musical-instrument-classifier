@@ -32,30 +32,17 @@ train_labels = np.loadtxt('train/labels.txt')
 endtime = time.time() - starttime
 print('loaded training labels in ', endtime, 's.')
 
-#labels = np.loadtxt('tests/labels.txt')
 starttime = time.time()
 test_labels = np.loadtxt('test/labels.txt')
 endtime = time.time() - starttime
 print('loaded test labels in ', endtime, 's.')
 starttime = time.time()
 
-# print(labels.shape)
-#train_dictfile = open('dictionary.txt', 'r')
-#test_dictfile = open('dictionary.txt', 'r')
-
 dictfile = open('dictionary.txt', 'r')
 train_instruments = eval(dictfile.read())
-
-"""
-test_instruments = eval(test_dictfile.read())
-if train_dictfile != test_dictfile:
-    print("dictionary mismatch")
-    exit(1)
-"""
 category_count = len(train_instruments)
 train_label_cats = keras.utils.to_categorical(train_labels, num_classes=category_count)
 test_label_cats = keras.utils.to_categorical(test_labels, num_classes=category_count)
-
 
 # build model
 
@@ -64,9 +51,8 @@ all_labels = train_instruments.keys()
 model = keras.models.Sequential()
 
 # set up layers
-model.add(keras.layers.Dense(50, input_dim=5190))
+model.add(keras.layers.Dense(50, input_dim=30))
 model.add(keras.layers.Activation('sigmoid'))
-#model.add(keras.layers.Activation('relu'))  # can experiment with different activation functions
 model.add(keras.layers.Dense(100))
 model.add(keras.layers.Activation('sigmoid'))
 model.add(keras.layers.Dense(category_count, activation=tf.nn.sigmoid))
@@ -77,7 +63,7 @@ model.compile(optimizer='rmsprop',
 
 # train model
 starttime = time.time()
-model.fit(x=train_features, y=train_label_cats, epochs=1)
+model.fit(x=train_features, y=train_label_cats, epochs=10)
 endtime = time.time() - starttime
 print('one epoch in  ', endtime, 's.')
 

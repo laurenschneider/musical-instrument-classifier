@@ -88,5 +88,5 @@ def write_files(features, labels, test_or_train):
     np.savetxt(label_file, labels, fmt="%s")
 
 
-get_files('train')
-#get_files('test')
+#get_files('train')
+get_files('test')
