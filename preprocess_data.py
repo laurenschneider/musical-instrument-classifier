@@ -42,7 +42,7 @@ def extract_data(file_names, audio_path, test_or_train):
 
     counter = 0
 
-    dictionary = eval(open('dictionary.txt', 'r').read())
+    instr_dict = eval(open('dictionary.txt', 'r').read())
 
     for wavfile in file_names:
 
@@ -58,7 +58,7 @@ def extract_data(file_names, audio_path, test_or_train):
         instr_name = instrument[0]          # first index is the name string
 
         # add correct value to labels that corresponds to dict entry for instrument key
-        labels = np.append(labels, dictionary[instr_name])
+        labels = np.append(labels, instr_dict[instr_name])
 
         if counter%100 == 0:
             print(counter, "files processed")
