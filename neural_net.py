@@ -25,6 +25,7 @@ def load_data(filepath):
     data = np.loadtxt(filepath)
     endtime = time.time() - starttime
     print('loaded data in ', endtime, 's.')
+    
     return data
 
 
