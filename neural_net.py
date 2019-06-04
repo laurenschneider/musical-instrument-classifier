@@ -40,10 +40,12 @@ print('loaded test labels in ', endtime, 's.')
 starttime = time.time()
 
 # print(labels.shape)
-train_dictfile = open('train/dictionary.txt', 'r')
-test_dictfile = open('test/dictionary.txt', 'r')
+#train_dictfile = open('dictionary.txt', 'r')
+#test_dictfile = open('dictionary.txt', 'r')
 
-train_instruments = eval(train_dictfile.read())
+dictfile = open('dictionary.txt', 'r')
+train_instruments = eval(dictfile.read())
+
 """
 test_instruments = eval(test_dictfile.read())
 if train_dictfile != test_dictfile:
@@ -53,11 +55,11 @@ if train_dictfile != test_dictfile:
 category_count = len(train_instruments)
 train_label_cats = keras.utils.to_categorical(train_labels, num_classes=category_count)
 test_label_cats = keras.utils.to_categorical(test_labels, num_classes=category_count)
-#print(label_cats.shape)
+
+
 # build model
 
 all_labels = train_instruments.keys()
-
 
 model = keras.models.Sequential()
 
