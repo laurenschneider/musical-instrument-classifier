@@ -63,7 +63,7 @@ model.compile(optimizer='rmsprop',
 
 # train model
 starttime = time.time()
-model.fit(x=train_features, y=train_label_cats, epochs=10)
+model.fit(x=train_features, y=train_label_cats, epochs=100)
 endtime = time.time() - starttime
 print('one epoch in  ', endtime, 's.')
 
