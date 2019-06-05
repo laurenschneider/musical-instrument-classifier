@@ -1,5 +1,4 @@
 numpy
 matplotlib
 tensorflow
-tensorflow_datasets
 seaborn

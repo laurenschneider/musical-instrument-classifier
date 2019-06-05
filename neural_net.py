@@ -1,7 +1,9 @@
 """
-Neural network
-"""
+Neural network to classify acoustic instrument sounds.
 
+Must have run preprocess_data.py to generate keras friendly data files
+before running this neural net.
+"""
 
 import tensorflow as tf
 from tensorflow import keras
@@ -11,53 +13,43 @@ from sklearn.metrics import confusion_matrix
 import seaborn
 from matplotlib import pyplot
 
-starttime = time.time()
-# get data from preprocessed files
-train_features = np.loadtxt('train/features.txt')
-endtime = time.time() - starttime
-print('loaded training data in ', endtime, 's.')
-#features = np.loadtxt('tests/features.txt')
-starttime = time.time()
-test_features = np.loadtxt('test/features.txt')
-endtime = time.time() - starttime
-print('loaded test data in ', endtime, 's.')
-# print(features.shape)
-starttime = time.time()
-train_labels = np.loadtxt('train/labels.txt')
-endtime = time.time() - starttime
-print('loaded training labels in ', endtime, 's.')
-#labels = np.loadtxt('tests/labels.txt')
-starttime = time.time()
-test_labels = np.loadtxt('test/labels.txt')
-endtime = time.time() - starttime
-print('loaded test labels in ', endtime, 's.')
-starttime = time.time()
-# print(labels.shape)
-train_dictfile = open('train/dictionary.txt', 'r')
-test_dictfile = open('test/dictionary.txt', 'r')
 
-train_instruments = eval(train_dictfile.read())
-"""
-test_instruments = eval(test_dictfile.read())
-if train_dictfile != test_dictfile:
-    print("dictionary mismatch")
-    exit(1)
-"""
-category_count = len(train_instruments)
+def load_data(filepath):
+    """
+    Load preprocessed data to run through keras model.
+    :param filepath: String
+    :returns: numpy array
+    """
+    starttime = time.time()
+    # get data from preprocessed files
+    data = np.loadtxt(filepath)
+    endtime = time.time() - starttime
+    print('loaded data in ', endtime, 's.')
+    
+    return data
+
+
+# get data
+
+train_labels = load_data('train/labels.txt')
+train_features = load_data('train/features.txt')
+test_labels = load_data('test/labels.txt')
+test_features = load_data('test/features.txt')
+
+
+dictfile = open('dictionary.txt', 'r')
+instr_dict = eval(dictfile.read())
+category_count = len(instr_dict)
 train_label_cats = keras.utils.to_categorical(train_labels, num_classes=category_count)
 test_label_cats = keras.utils.to_categorical(test_labels, num_classes=category_count)
-#print(label_cats.shape)
+
 # build model
-
-all_labels = train_instruments.keys()
-
 
 model = keras.models.Sequential()
 
 # set up layers
-model.add(keras.layers.Dense(50, input_dim=5190))
+model.add(keras.layers.Dense(50, input_dim=30))
 model.add(keras.layers.Activation('sigmoid'))
-#model.add(keras.layers.Activation('relu'))  # can experiment with different activation functions
 model.add(keras.layers.Dense(100))
 model.add(keras.layers.Activation('sigmoid'))
 model.add(keras.layers.Dense(category_count, activation=tf.nn.sigmoid))
@@ -66,15 +58,19 @@ model.compile(optimizer='rmsprop',
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 
-# TODO: train model
+# train model
+
+# use checkpointer to hold weights to prevent overtraining
+checkpointer = keras.callbacks.ModelCheckpoint(filepath='/tmp/weights.hdf5', verbose=1, save_best_only=True)
 starttime = time.time()
-model.fit(x=train_features, y=train_label_cats, epochs=1)
+model.fit(x=train_features, y=train_label_cats, epochs=10, callbacks=[checkpointer])
 endtime = time.time() - starttime
 print('one epoch in  ', endtime, 's.')
 
-# TODO: create testing dataset
+# create testing dataset
 model.evaluate(test_features, test_label_cats)
-# TODO: evaluate accuracy
+
+# evaluate accuracy
 predictions = model.predict(test_features)
 flat_predictions = np.argmax(predictions, axis=1)
 print(flat_predictions)
@@ -84,6 +80,7 @@ print(flat_actuals)
 conf_matrix = confusion_matrix(flat_actuals, flat_predictions)
 print(conf_matrix.shape)
 
+all_labels = instr_dict.keys()
 seaborn.heatmap(conf_matrix, cmap='Blues', annot=True, fmt='d', xticklabels=all_labels, yticklabels=all_labels)
 pyplot.xlabel('Actual')
 pyplot.ylabel('Predicted')
