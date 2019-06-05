@@ -10,6 +10,7 @@ Final project for Computers, Sound, & Music at Portland State University.
 <b>Windows: </b>
 This project should be run in an Anaconda virtual environment.
 Once inside the virtual environment, run the following commands:
+```conda install tensorflow```
 
 ```conda install -c conda-forge librosa```
 
