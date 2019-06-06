@@ -1,5 +1,5 @@
 """
-Neural network to classify acoustic instrument sounds.
+Keras model to classify acoustic instrument sounds.
 
 Must have run preprocess_data.py to generate keras friendly data files
 before running this neural net.
@@ -18,6 +18,7 @@ class Neural_Net:
     def __init__(self):
         self.model = keras.models.Sequential()
 
+
     def build_model(self, category_count):
         """
         Create keras neural network model
@@ -34,9 +35,12 @@ class Neural_Net:
                           loss='categorical_crossentropy',
                           metrics=['accuracy'])
 
+
     def train(self, train_features, train_label_cats):
         """
-
+        Train the model on training data set
+        :param train_features: numpy array
+        :param train_label_cats: numpy array
         """
         checkpointer = keras.callbacks.ModelCheckpoint(filepath='/tmp/weights.hdf5',
                                                         verbose=1,
@@ -50,10 +54,11 @@ class Neural_Net:
         print('one epoch in  ', endtime, 's.')
 
 
-
     def predict(self, test_features, test_label_cats):
         """
-
+        Test the model to predict instruments
+        :param test_features: numpy array
+        :param test_label_cats: numpy array
         """
         # create testing dataset
         self.model.evaluate(test_features, test_label_cats)
@@ -65,16 +70,15 @@ class Neural_Net:
         print(predictions.shape)
         flat_actuals = np.argmax(test_label_cats, axis=1)
         print(flat_actuals)
-        conf_matrix = confusion_matrix(flat_actuals, flat_predictions)
-        print(conf_matrix.shape)
+        self.conf_matrix = confusion_matrix(flat_actuals, flat_predictions)
 
-        return conf_matrix
 
-    def plot_heatmap(self, conf_matrix, labels):
+    def plot_heatmap(self, labels):
         """
-
+        Display results of prediction
+        :param labels: array
         """
-        seaborn.heatmap(conf_matrix,
+        seaborn.heatmap(self.conf_matrix,
                         cmap='Blues',
                         annot=True,
                         fmt='d',

@@ -1,3 +1,7 @@
+"""
+Train a keras neural network to predict acoustic instrument sounds.
+"""
+
 import time
 import tensorflow as tf
 from tensorflow import keras
@@ -18,7 +22,7 @@ def load_data(filepath):
 
     return data
 
-
+# import data
 train_labels = load_data('train/labels.txt')
 train_features = load_data('train/features.txt')
 test_labels = load_data('test/labels.txt')
@@ -31,8 +35,9 @@ train_label_cats = keras.utils.to_categorical(train_labels, num_classes=category
 test_label_cats = keras.utils.to_categorical(test_labels, num_classes=category_count)
 all_labels = instr_dict.keys()
 
+# run model and see results
 model = Neural_Net()
 model.build_model(category_count)
 model.train(train_features, train_label_cats)
-conf_matrix = model.predict(test_features, test_label_cats)
-model.plot_heatmap(conf_matrix, all_labels)
+model.predict(test_features, test_label_cats)
+model.plot_heatmap(all_labels)
