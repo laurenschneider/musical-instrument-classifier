@@ -1,11 +1,7 @@
 # unit tests for neural network
 
-<<<<<<< HEAD
 from neural_net import Neural_Net
 import tensorflow as tf
-=======
-from train_and_classify import load_data
->>>>>>> add-license
 
 TEST_NN = Neural_Net()
 
