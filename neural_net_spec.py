@@ -1,6 +1,6 @@
 # unit tests for neural network
 
-from neural_net import load_data
+from train_and_classify import load_data
 
 INPUT_DIMENSION = 30
 
