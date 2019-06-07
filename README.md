@@ -48,7 +48,7 @@ our own.
 ### Discussion of Results
 
 The neural network got to 79% accuracy in classifying the test data when run for 10 epochs. When we tried running it for more epochs,
-accuracy decreased. We would have liked to have seen better results if we'd had time to play with the network's set up more.
+accuracy decreased. This is likely a result of overtraining. We would have liked to have seen better results if we'd had time to play with the network's set up more.
 
 ### Lessons Learned
 
@@ -56,4 +56,4 @@ If we had more time, we would figure out a more specific, balanced dataset. The 
 the number of files across categories, which contributed to the network overtraining as the number of epochs increased.
 
 We spent a good amount of time trying to use too many features for each file before finally deciding on MFCCs.
-Once we decided on these, the process became much simpler.
+Once we decided on these, the process became much simpler. MFCCs have been shown to be a reliable feature for classifying sounds, however it could be interesting to see how our model would do if we had the computing resources to include more features. In the 'plots' folder, some images can be seen comparing the decomposition of a few different instruments into their harmonic and percussive compnonents. Another alternative experiment could be to run the neural net using only this decomposition as our features, and then compare to the results from the MFCC features.
