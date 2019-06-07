@@ -24,6 +24,9 @@ class Neural_Net:
         Create keras neural network model
         :param category_count: int
         """
+        if category_count <= 0:
+            return 0
+
         # set up layers
         self.model.add(keras.layers.Dense(50, input_dim=30))
         self.model.add(keras.layers.Activation('sigmoid'))
@@ -35,6 +38,7 @@ class Neural_Net:
                           loss='categorical_crossentropy',
                           metrics=['accuracy'])
 
+        return 1
 
     def train(self, train_features, train_label_cats):
         """

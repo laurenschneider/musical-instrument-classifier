@@ -8,6 +8,7 @@ from tensorflow import keras
 from neural_net import Neural_Net
 import numpy as np
 
+
 def load_data(filepath):
     """
     Load preprocessed data to run through keras model.
