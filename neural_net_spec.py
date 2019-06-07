@@ -1,15 +1,14 @@
 # unit tests for neural network
 
-from neural_net import load_data
+from neural_net import Neural_Net
 
-INPUT_DIMENSION = 30
+TEST_NN = Neural_Net()
 
-def dataShouldMatchRequestedInputDim():
-    train_features = load_data('train/features.txt')
-    if INPUT_DIMENSION == train_features.shape:
-        print('dimensions match')
-    else:
-        print('dimension mismatch')
+result = TEST_NN.build_model(0)
+print("category count passed") if result==0 else print("category count failed")
 
+result = TEST_NN.build_model(-2)
+print("category count passed") if result==0 else print("category count failed")
 
-dataShouldMatchRequestedInputDim()
+result = TEST_NN.build_model(10)
+print("category count passed") if result==1 else print("category count failed")
